@@ -16,10 +16,12 @@ const bebidasPrecio = [
     {bebida: "Agua Mineral", precio: 0.60},
     {bebida: "Agua con Gas", precio: 0.95}
 ];
+const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
 
 let valorMoneda = 0;
 let productoSeleccionado = "";
+let acumulacion = "";
 
 
 monedas.forEach(boton => {
@@ -83,13 +85,33 @@ function comprarBebida() {
     const precioBebida = bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === productoSeleccionado);
     if (valorMoneda >= precioBebida.precio){
         valorMoneda -= precioBebida.precio
-        saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
+        //saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
+        calcularCambio();
         productoSel.textContent = "No hay producto seleccionado";
         sonidoBebida.play();
-        window.alert(`Gracias por comprar ${productoSeleccionado}`);
+        window.alert(`Gracias por comprar ${productoSeleccionado} Aqui su cambio: ${acumulacion}`);
         productoSeleccionado = "";
+        acumulacion = "";
+        valorMoneda = 0;
+        saldo.textContent = `SALDO: 0.00 €`;
     } else{
         window.alert("No tienes suficiente dinero");
     }
 
+}
+
+function calcularCambio() {
+
+    if (valorMoneda > 0) {
+
+        for (let i = 0; i < dinero.length; i++){
+
+            if (valorMoneda >= dinero[i]){
+
+                let cambio = Math.floor(valorMoneda / dinero[i]);
+                valorMoneda = valorMoneda % dinero[i];
+                acumulacion += ` \n${cambio} de ${dinero[i]} €`;
+            }
+        }
+    }
 }
