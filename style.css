@@ -248,7 +248,49 @@ body {
 .contenedor__informacion-monedas-valor:active {
 
     transform: translateY(2px);
-    border-bottom-width: 2px; /
+    border-bottom-width: 2px;
+}
+
+.contenedor__informacion-billetes {
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.contenedor__informacion-billetes-titulo {
+
+    grid-column: 1 / -1;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.contenedor__informacion-billetes-valor {
+
+    background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+    border: none;
+    border-bottom: 4px solid #064e3b; /* Relieve inferior verde */
+    border-radius: 12px;
+    padding: 14px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #161a1d;
+    cursor: pointer;
+    transition: transform 0.1s, border-bottom-width 0.1s, background 0.1s;
+    text-align: center;
+    outline: none;
+}
+
+.contenedor__informacion-billetes-valor:hover {
+
+    background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+}
+
+.contenedor__informacion-billetes-valor:active {
+
+    transform: translateY(2px);
+    border-bottom-width: 2px;
 }
 
 .contendor__informacion-acciones {

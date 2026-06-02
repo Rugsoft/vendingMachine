@@ -1,6 +1,7 @@
 
 const bebidas = document.querySelectorAll(".contenedor__bebidas-articulo");
 const monedas = document.querySelectorAll(".contenedor__informacion-monedas-valor");
+const billetes = document.querySelectorAll(".contenedor__informacion-billetes-valor");
 const saldo = document.querySelector(".contenedor__informacion-saldo-precio");
 const productoSel = document.querySelector(".contenedor__informacion-seleccion-bebido");
 const comprar = document.querySelector(".contenedor__informacion-acciones-comprar");
@@ -31,6 +32,16 @@ monedas.forEach(boton => {
 
 });
 
+billetes.forEach(boton => {
+
+    boton.addEventListener("click", (e) => {
+        valorMoneda += Number(e.target.value);
+        saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
+        sonidoMoneda.play();
+    });
+
+});
+
 bebidas.forEach(boton => {
 
     boton.addEventListener("click", (e) => {
@@ -38,19 +49,8 @@ bebidas.forEach(boton => {
         const tarjetaClicada = e.currentTarget;
         productoSeleccionado = tarjetaClicada.querySelector(".contenedor__bebidas-articulo-titulo").textContent;
         productoSel.textContent = productoSeleccionado;
-
-        //comprarBebida();
-
-        /*if (valorMoneda >= 1){
-            valorMoneda -= 1;
-            saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
-            productoSel.textContent = "No hay producto seleccionado";
-            sonidoBebida.play();
-            window.alert("Gracias por su compra!")
-        }
-    });*/
     });
-});      
+});
 
 comprar.addEventListener("click", () => {
 
