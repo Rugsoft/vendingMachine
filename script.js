@@ -10,11 +10,11 @@ const sonidoMoneda = document.getElementById("sonidoMoneda");
 const sonidoBebida = document.getElementById("sonidoLata");
 const bebidasPrecio = [
     {bebida: "Coca-Cola", precio: 1.20, stock: 1},
-    {bebida: "Fanta", precio: 1, stock: 10},
+    {bebida: "Fanta", precio: 1, stock: 5},
     {bebida: "Cerveza", precio: 1.55, stock: 10},
-    {bebida: "Red-Bull", precio: 2, stock: 10},
-    {bebida: "Agua Mineral", precio: 0.60, stock: 10},
-    {bebida: "Agua con Gas", precio: 0.95, stock: 10}
+    {bebida: "Red-Bull", precio: 2, stock: 2},
+    {bebida: "Agua Mineral", precio: 0.60, stock: 7},
+    {bebida: "Agua con Gas", precio: 0.95, stock: 5}
 ];
 const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
