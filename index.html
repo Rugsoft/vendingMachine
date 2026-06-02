@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vending Machine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="contenedor">
+        <h1 class="contenedor__titulo">Vending Machine</h1>
+
+        <div class="contenedor__bebidas">
+            <p class="contenedor__bebidas-titulo">Bebidas</p>
+            <p class="contenedor__bebidas-precio">Refrescate!</p>
+            <card class="contenedor__bebidas-articulo">
+                <img src="./imagenes/Captura de pantalla 2026-06-01 134732.png" alt="">
+                <h2 class="contenedor__bebidas-articulo-titulo">Coca-Cola</h2>
+                <p class="contenedor__bebidas-articulo-subtitulo">Refresco (1.20 €)</p>                
+            </card>
+            <card class="contenedor__bebidas-articulo">
+                <img src="./imagenes/Captura de pantalla 2026-06-01 134738.png" alt="">
+                <h2 class="contenedor__bebidas-articulo-titulo">Fanta</h2>
+                <p class="contenedor__bebidas-articulo-subtitulo">Naranja (1 €)</p>                
+            </card>
+            <card class="contenedor__bebidas-articulo">
+                <img src="./imagenes/Captura de pantalla 2026-06-01 134744.png" alt="">
+                <h2 class="contenedor__bebidas-articulo-titulo">Cerveza</h2>
+                <p class="contenedor__bebidas-articulo-subtitulo">Premium (1.55 €)</p>                
+            </card>
+            <card class="contenedor__bebidas-articulo">
+                <img src="./imagenes/Captura de pantalla 2026-06-01 134748.png" alt="">
+                <h2 class="contenedor__bebidas-articulo-titulo">Red-Bull</h2>
+                <p class="contenedor__bebidas-articulo-subtitulo">Energia (2 €)</p>                
+            </card>
+            <card class="contenedor__bebidas-articulo">
+                <img src="./imagenes/Captura de pantalla 2026-06-01 134752.png" alt="">
+                <h2 class="contenedor__bebidas-articulo-titulo">Agua Mineral</h2>
+                <p class="contenedor__bebidas-articulo-subtitulo">Natural (0.60 €)</p>                
+            </card>
+            <card class="contenedor__bebidas-articulo">
+                <img src="./imagenes/Captura de pantalla 2026-06-01 134757.png" alt="">
+                <h2 class="contenedor__bebidas-articulo-titulo">Agua con Gas</h2>
+                <p class="contenedor__bebidas-articulo-subtitulo">Vichy-Catalan (0.95€)</p>                
+            </card>
+        </div>
+
+        <div class="contendor__informacion">
+            <card class="contenedor__informacion-saldo">
+                <p class="contenedor__informacion-saldo-titulo">Saldo</p>
+                <p class="contenedor__informacion-saldo-precio">SALDO: 0.00 €</p>
+            </card>
+            <card class="contenedor__informacion-seleccion">
+                <p class="contenedor__informacion-seleccion-titulo">Producto Seleccionado</p>
+                <p class="contenedor__informacion-seleccion-bebido">No hay producto seleccionado</p>
+            </card>
+            <div class="contenedor__informacion-monedas">
+                <p class="contenedor__informacion-monedas-titulo">Inserte Monedas</p>
+                <button class="contenedor__informacion-monedas-valor" value="0.05">0.05 €</button>
+                <button class="contenedor__informacion-monedas-valor" value="0.10">0.10 €</button>
+                <button class="contenedor__informacion-monedas-valor" value="0.20">0.20 €</button>
+                <button class="contenedor__informacion-monedas-valor" value="0.50">0.50 €</button>
+                <button class="contenedor__informacion-monedas-valor" value="1">1 €</button>
+                <button class="contenedor__informacion-monedas-valor" value="2">2 €</button>
+            </div>
+            <div class="contendor__informacion-acciones">
+                <button class="contenedor__informacion-acciones-comprar">Comprar</button>
+                <button class="contenedor__informacion-acciones-cancelar">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <audio id="sonidoMoneda" src="./sonidos/sonidoMoneda.mp3"></audio>
+    <audio id="sonidoLata" src="./sonidos/sonidoLata.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
