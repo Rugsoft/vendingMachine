@@ -22,6 +22,8 @@ const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 let valorMoneda = 0;
 let productoSeleccionado = "";
 let acumulacion = "";
+let cambio = 0;
+
 
 
 monedas.forEach(boton => {
@@ -86,10 +88,11 @@ function comprarBebida() {
     if (valorMoneda >= precioBebida.precio){
         valorMoneda -= precioBebida.precio
         //saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
+        cambio = valorMoneda;
         calcularCambio();
         productoSel.textContent = "No hay producto seleccionado";
         sonidoBebida.play();
-        window.alert(`Gracias por comprar ${productoSeleccionado} Aqui su cambio: ${acumulacion}`);
+        window.alert(`Gracias por comprar ${productoSeleccionado} \nAqui su cambio de ${cambio.toFixed(2)} € : ${acumulacion}`);
         productoSeleccionado = "";
         acumulacion = "";
         valorMoneda = 0;
