@@ -9,12 +9,12 @@ const cancelar = document.querySelector(".contenedor__informacion-acciones-cance
 const sonidoMoneda = document.getElementById("sonidoMoneda");
 const sonidoBebida = document.getElementById("sonidoLata");
 const bebidasPrecio = [
-    {bebida: "Coca-Cola", precio: 1.20},
-    {bebida: "Fanta", precio: 1},
-    {bebida: "Cerveza", precio: 1.55},
-    {bebida: "Red-Bull", precio: 2},
-    {bebida: "Agua Mineral", precio: 0.60},
-    {bebida: "Agua con Gas", precio: 0.95}
+    {bebida: "Coca-Cola", precio: 1.20, stock: 1},
+    {bebida: "Fanta", precio: 1, stock: 10},
+    {bebida: "Cerveza", precio: 1.55, stock: 10},
+    {bebida: "Red-Bull", precio: 2, stock: 10},
+    {bebida: "Agua Mineral", precio: 0.60, stock: 10},
+    {bebida: "Agua con Gas", precio: 0.95, stock: 10}
 ];
 const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
@@ -49,9 +49,16 @@ billetes.forEach(boton => {
 bebidas.forEach(boton => {
 
     boton.addEventListener("click", (e) => {
-
         const tarjetaClicada = e.currentTarget;
-        productoSeleccionado = tarjetaClicada.querySelector(".contenedor__bebidas-articulo-titulo").textContent;
+        const titulo = tarjetaClicada.querySelector(".contenedor__bebidas-articulo-titulo").textContent;
+        const objetoBebida = bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === titulo);
+
+        if (objetoBebida && objetoBebida.stock === 0) {
+            window.alert("No hay stock disponible");
+            return;
+        }
+
+        productoSeleccionado = titulo;
         productoSel.textContent = productoSeleccionado;
     });
 });
@@ -88,11 +95,20 @@ function comprarBebida() {
         window.alert("No hay producto seleccionado");
         return;
     }
-    const precioBebida = bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === productoSeleccionado);
-    if (valorMoneda >= precioBebida.precio){
-        valorMoneda -= precioBebida.precio
+
+    const objetoBebida = bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === productoSeleccionado);
+
+    if (objetoBebida.stock === 0){
+        window.alert("No hay stock disponible");
+        return;
+    }
+
+    if (valorMoneda >= objetoBebida.precio){
+        valorMoneda -= objetoBebida.precio
         //saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
         cambio = valorMoneda;
+        objetoBebida.stock--;
+        actualizarStockUI();
         calcularCambio(cambio);
         productoSel.textContent = "No hay producto seleccionado";
         sonidoBebida.play();
@@ -109,17 +125,44 @@ function comprarBebida() {
 }
 
 function calcularCambio(importeMonetario) {
-
-    if (importeMonetario > 0) {
-
-        for (let i = 0; i < dinero.length; i++){
-
-            if (importeMonetario >= dinero[i]){
-
-                let veces = Math.floor(importeMonetario / dinero[i]);
-                importeMonetario = importeMonetario % dinero[i];
+    let importeCentimos = Math.round(importeMonetario * 100);
+    if (importeCentimos > 0) {
+        const dineroCentimos = [2000, 1000, 500, 200, 100, 50, 20, 10, 5];
+        for (let i = 0; i < dineroCentimos.length; i++){
+            if (importeCentimos >= dineroCentimos[i]){
+                let veces = Math.floor(importeCentimos / dineroCentimos[i]);
+                importeCentimos = importeCentimos % dineroCentimos[i];
                 acumulacion += ` \n${veces} de ${dinero[i]} €`;
             }
         }
     }
 }
+
+function actualizarStockUI() {
+    bebidas.forEach(card => {
+        const titulo = card.querySelector(".contenedor__bebidas-articulo-titulo").textContent;
+        const objetoBebida = bebidasPrecio.find(b => b.bebida === titulo);
+        if (objetoBebida) {
+            const stockSpan = card.querySelector(".stock-cantidad");
+            if (stockSpan) {
+                stockSpan.textContent = objetoBebida.stock;
+            }
+            if (objetoBebida.stock === 0) {
+                card.classList.add("contenedor__bebidas-articulo--sin-stock");
+                const stockText = card.querySelector(".contenedor__bebidas-articulo-stock");
+                if (stockText) {
+                    stockText.innerHTML = "Agotado";
+                }
+            } else {
+                card.classList.remove("contenedor__bebidas-articulo--sin-stock");
+                const stockText = card.querySelector(".contenedor__bebidas-articulo-stock");
+                if (stockText) {
+                    stockText.innerHTML = `Stock: <span class="stock-cantidad">${objetoBebida.stock}</span>`;
+                }
+            }
+        }
+    });
+}
+
+// Inicialización de la interfaz
+actualizarStockUI();
