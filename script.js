@@ -72,9 +72,13 @@ comprar.addEventListener("click", () => {
 });
 
 cancelar.addEventListener("click", () => {
+    calcularCambio(valorMoneda);
+    window.alert(`Compra cancelada \n Aqui tiene su dinero de ${valorMoneda.toFixed(2)} € : ${acumulacion}`);
     productoSel.textContent = "No hay producto seleccionado";
     productoSeleccionado = "";
     valorMoneda = 0;
+    acumulacion = "";
+    cambio = 0;
     saldo.textContent = `SALDO: 0.00 €`;
 });
 
@@ -89,7 +93,7 @@ function comprarBebida() {
         valorMoneda -= precioBebida.precio
         //saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
         cambio = valorMoneda;
-        calcularCambio();
+        calcularCambio(cambio);
         productoSel.textContent = "No hay producto seleccionado";
         sonidoBebida.play();
         window.alert(`Gracias por comprar ${productoSeleccionado} \nAqui su cambio de ${cambio.toFixed(2)} € : ${acumulacion}`);
@@ -97,23 +101,24 @@ function comprarBebida() {
         acumulacion = "";
         valorMoneda = 0;
         saldo.textContent = `SALDO: 0.00 €`;
+        cambio = 0;
     } else{
         window.alert("No tienes suficiente dinero");
     }
 
 }
 
-function calcularCambio() {
+function calcularCambio(importeMonetario) {
 
-    if (valorMoneda > 0) {
+    if (importeMonetario > 0) {
 
         for (let i = 0; i < dinero.length; i++){
 
-            if (valorMoneda >= dinero[i]){
+            if (importeMonetario >= dinero[i]){
 
-                let cambio = Math.floor(valorMoneda / dinero[i]);
-                valorMoneda = valorMoneda % dinero[i];
-                acumulacion += ` \n${cambio} de ${dinero[i]} €`;
+                let veces = Math.floor(importeMonetario / dinero[i]);
+                importeMonetario = importeMonetario % dinero[i];
+                acumulacion += ` \n${veces} de ${dinero[i]} €`;
             }
         }
     }
