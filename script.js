@@ -21,8 +21,6 @@ const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
 let valorMoneda = 0;
 let productoSeleccionado = "";
-let acumulacion = "";
-let cambio = 0;
 
 
 
@@ -79,14 +77,23 @@ comprar.addEventListener("click", () => {
 });
 
 cancelar.addEventListener("click", () => {
-    calcularCambio(valorMoneda);
-    window.alert(`Compra cancelada \n Aqui tiene su dinero de ${valorMoneda.toFixed(2)} € : ${acumulacion}`);
+    // Si no hay saldo ni bebida seleccionada, no hay nada que cancelar
+    if (valorMoneda === 0 && productoSeleccionado === "") {
+        window.alert("No hay nada que cancelar");
+        return;
+    }
+
+    // Si se ha ingresado saldo, se devuelve la totalidad
+    if (valorMoneda > 0) {
+        const cambioDetalle = calcularCambio(valorMoneda);
+        window.alert(`Compra cancelada \n Aquí tiene su dinero de ${valorMoneda.toFixed(2)} € : ${cambioDetalle}`);
+        valorMoneda = 0;
+        saldo.textContent = `SALDO: 0.00 €`;
+    }
+
+    // Se limpia la selección en cualquier caso
     productoSel.textContent = "No hay producto seleccionado";
     productoSeleccionado = "";
-    valorMoneda = 0;
-    acumulacion = "";
-    cambio = 0;
-    saldo.textContent = `SALDO: 0.00 €`;
 });
 
 function comprarBebida() {
@@ -104,20 +111,19 @@ function comprarBebida() {
     }
 
     if (valorMoneda >= objetoBebida.precio){
-        valorMoneda -= objetoBebida.precio
-        //saldo.textContent = `SALDO: ${valorMoneda.toFixed(2)} €`;
-        cambio = valorMoneda;
+        const saldoRestante = valorMoneda - objetoBebida.precio;
         objetoBebida.stock--;
         actualizarStockUI();
-        calcularCambio(cambio);
+        
+        const cambioDetalle = calcularCambio(saldoRestante);
+        
         productoSel.textContent = "No hay producto seleccionado";
         sonidoBebida.play();
-        window.alert(`Gracias por comprar ${productoSeleccionado} \nAqui su cambio de ${cambio.toFixed(2)} € : ${acumulacion}`);
+        window.alert(`Gracias por comprar ${productoSeleccionado} \nAqui su cambio de ${saldoRestante.toFixed(2)} € : ${cambioDetalle}`);
+        
         productoSeleccionado = "";
-        acumulacion = "";
         valorMoneda = 0;
         saldo.textContent = `SALDO: 0.00 €`;
-        cambio = 0;
     } else{
         window.alert("No tienes suficiente dinero");
     }
@@ -125,6 +131,7 @@ function comprarBebida() {
 }
 
 function calcularCambio(importeMonetario) {
+    let detalle = "";
     let importeCentimos = Math.round(importeMonetario * 100);
     if (importeCentimos > 0) {
         const dineroCentimos = [2000, 1000, 500, 200, 100, 50, 20, 10, 5];
@@ -132,10 +139,11 @@ function calcularCambio(importeMonetario) {
             if (importeCentimos >= dineroCentimos[i]){
                 let veces = Math.floor(importeCentimos / dineroCentimos[i]);
                 importeCentimos = importeCentimos % dineroCentimos[i];
-                acumulacion += ` \n${veces} de ${dinero[i]} €`;
+                detalle += ` \n${veces} de ${dinero[i]} €`;
             }
         }
     }
+    return detalle;
 }
 
 function actualizarStockUI() {
