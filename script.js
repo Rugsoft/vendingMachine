@@ -21,6 +21,8 @@ const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
 let valorMoneda = 0;
 let productoSeleccionado = "";
+let ventas = 0;
+let recaudacion = 0;
 
 
 
@@ -124,9 +126,22 @@ function comprarBebida() {
         productoSeleccionado = "";
         valorMoneda = 0;
         saldo.textContent = `SALDO: 0.00 €`;
+        
+        ventas++;
+        recaudacion += objetoBebida.precio;
+        let datosGuardados = [bebidasPrecio, ventas, recaudacion];
+
+        guardarLocalStorage(datosGuardados);
+
     } else{
         window.alert("No tienes suficiente dinero");
     }
+
+}
+
+function guardarLocalStorage(datosGuardados) {
+
+    localStorage.setItem("datosGuardados", JSON.stringify(datosGuardados));
 
 }
 
