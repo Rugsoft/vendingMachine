@@ -119,12 +119,18 @@ inOutDatos.forEach(boton => {
                 const archivo = e.target.files[0];
                 const lector = new FileReader();
                 lector.onload = (e) => {
-                    const datos = JSON.parse(e.target.result);
-                    datosMaquina[0] = datos[0];
-                    datosMaquina[1] = datos[1];
-                    datosMaquina[2] = datos[2];
-                    guardarLocalStorage();
-                    actualizarStockUI();
+                    try {
+                        const datos = JSON.parse(e.target.result);
+                        datosMaquina[0] = datos[0];
+                        datosMaquina[1] = datos[1];
+                        datosMaquina[2] = datos[2];
+                        guardarLocalStorage();
+                        actualizarStockUI();
+
+                    } catch (error) {
+                        window.alert("Error al cargar el archivo");
+                        console.error(error);
+                    } 
                 };
                 lector.readAsText(archivo);
             });
