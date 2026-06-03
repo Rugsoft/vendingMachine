@@ -8,6 +8,7 @@ const comprar = document.querySelector(".contenedor__informacion-acciones-compra
 const cancelar = document.querySelector(".contenedor__informacion-acciones-cancelar");
 const sonidoMoneda = document.getElementById("sonidoMoneda");
 const sonidoBebida = document.getElementById("sonidoLata");
+const inOutDatos = document.querySelectorAll(".contenedor__bebidas-acciones-btn");
 
 const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
@@ -18,7 +19,7 @@ let valorMoneda = 0;
 let productoSeleccionado = "";
 
 
-const datosGuardados = localStorage.getItem("datosGuardados");
+let datosGuardados = localStorage.getItem("datosGuardados");
     if (datosGuardados) {
         let datos = JSON.parse(datosGuardados);
         bebidasPrecio = datos[0];
@@ -78,6 +79,62 @@ bebidas.forEach(boton => {
         productoSel.textContent = productoSeleccionado;
     });
 });
+
+inOutDatos.forEach(boton => {
+
+    boton.addEventListener("click", (e) => {
+
+        datosGuardados = [bebidasPrecio, ventas, recaudacion];
+        if (boton.value === "Export"){
+
+            const datosTexto = JSON.stringify(datosGuardados);
+            const archivo = new Blob([datosTexto], { type: "application/json" });
+            const enlace = document.createElement("a");
+            enlace.href = URL.createObjectURL(archivo);
+            enlace.download = "datos.json";
+            enlace.click();
+            URL.revokeObjectURL(enlace.href);
+
+        } else if (boton.value === "Import"){
+
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".json";
+            input.addEventListener("change", (e) => {
+                const archivo = e.target.files[0];
+                const lector = new FileReader();
+                lector.onload = (e) => {
+                    const datos = JSON.parse(e.target.result);
+                    bebidasPrecio = datos[0];
+                    ventas = datos[1];
+                    recaudacion = datos[2];
+                    guardarLocalStorage();
+                    actualizarStockUI();
+                };
+                lector.readAsText(archivo);
+            });
+            input.click();
+
+        } else if (boton.value === "Reset"){
+
+            bebidasPrecio = [
+                {bebida: "Coca-Cola", precio: 1.20, stock: 1},
+                {bebida: "Fanta", precio: 1, stock: 5},
+                {bebida: "Cerveza", precio: 1.55, stock: 10},
+                {bebida: "Red-Bull", precio: 2, stock: 2},
+                {bebida: "Agua Mineral", precio: 0.60, stock: 7},
+                {bebida: "Agua con Gas", precio: 0.95, stock: 5}
+            ];
+            ventas = 0;
+            recaudacion = 0;
+            guardarLocalStorage();
+            actualizarStockUI();
+            window.alert("Datos reseteados");
+        }
+    });
+
+});
+
 
 comprar.addEventListener("click", () => {
 
