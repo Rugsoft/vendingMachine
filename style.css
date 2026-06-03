@@ -164,6 +164,50 @@ body {
     color: #ef4444;
 }
 
+.contenedor__bebidas-acciones {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.contenedor__bebidas-acciones-btn {
+    background-color: #212529;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+    outline: none;
+}
+
+.contenedor__bebidas-acciones-btn:hover {
+    background-color: #2c3035;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.contenedor__bebidas-acciones-btn:active {
+    transform: scale(0.98);
+}
+
+.contenedor__bebidas-acciones-icono {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: invert(1);
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.contenedor__bebidas-acciones-btn:hover .contenedor__bebidas-acciones-icono {
+    opacity: 1;
+}
+
 .contendor__informacion {
 
     display: flex;
