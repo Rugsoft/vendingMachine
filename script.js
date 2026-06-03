@@ -12,6 +12,19 @@ const inOutDatos = document.querySelectorAll(".contenedor__bebidas-acciones-btn"
 
 const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
+let datosMaquina = [
+    {"bebidasPrecio": [
+        {bebida: "Coca-Cola", precio: 1.20, stock: 1},
+        {bebida: "Fanta", precio: 1, stock: 5},
+        {bebida: "Cerveza", precio: 1.55, stock: 10},
+        {bebida: "Red-Bull", precio: 2, stock: 2},
+        {bebida: "Agua Mineral", precio: 0.60, stock: 7},
+        {bebida: "Agua con Gas", precio: 0.95, stock: 5}
+    ]}
+    ,
+    {"ventas": 0},
+    {"recaudacion": 0}
+];
 let bebidasPrecio = [];
 let ventas;
 let recaudacion;
@@ -19,25 +32,28 @@ let valorMoneda = 0;
 let productoSeleccionado = "";
 
 
-let datosGuardados = localStorage.getItem("datosGuardados");
+let datosGuardados = localStorage.getItem("datosMaquina");
     if (datosGuardados) {
         let datos = JSON.parse(datosGuardados);
-        bebidasPrecio = datos[0];
-        ventas = datos[1];
-        recaudacion = datos[2];
+        datosMaquina[0] = datos[0];
+        datosMaquina[1] = datos[1];
+        datosMaquina[2] = datos[2];
         actualizarStockUI();
     } else {
 
-        bebidasPrecio = [
-            {bebida: "Coca-Cola", precio: 1.20, stock: 1},
-            {bebida: "Fanta", precio: 1, stock: 5},
-            {bebida: "Cerveza", precio: 1.55, stock: 10},
-            {bebida: "Red-Bull", precio: 2, stock: 2},
-            {bebida: "Agua Mineral", precio: 0.60, stock: 7},
-            {bebida: "Agua con Gas", precio: 0.95, stock: 5}
-        ];
-        ventas = 0;
-        recaudacion = 0;
+        datosMaquina = [
+            {"bebidasPrecio": [
+                {bebida: "Coca-Cola", precio: 1.20, stock: 1},
+                {bebida: "Fanta", precio: 1, stock: 5},
+                {bebida: "Cerveza", precio: 1.55, stock: 10},
+                {bebida: "Red-Bull", precio: 2, stock: 2},
+                {bebida: "Agua Mineral", precio: 0.60, stock: 7},
+                {bebida: "Agua con Gas", precio: 0.95, stock: 5}
+            ]},
+            {"ventas": 0},
+            {"recaudacion": 0}
+            ];
+    
         guardarLocalStorage();
     }
 
@@ -68,7 +84,7 @@ bebidas.forEach(boton => {
     boton.addEventListener("click", (e) => {
         const tarjetaClicada = e.currentTarget;
         const titulo = tarjetaClicada.querySelector(".contenedor__bebidas-articulo-titulo").textContent;
-        const objetoBebida = bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === titulo);
+        const objetoBebida = datosMaquina[0].bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === titulo);
 
         if (objetoBebida && objetoBebida.stock === 0) {
             window.alert("No hay stock disponible");
@@ -84,10 +100,9 @@ inOutDatos.forEach(boton => {
 
     boton.addEventListener("click", (e) => {
 
-        datosGuardados = [bebidasPrecio, ventas, recaudacion];
         if (boton.value === "Export"){
 
-            const datosTexto = JSON.stringify(datosGuardados);
+            const datosTexto = JSON.stringify(datosMaquina);
             const archivo = new Blob([datosTexto], { type: "application/json" });
             const enlace = document.createElement("a");
             enlace.href = URL.createObjectURL(archivo);
@@ -105,9 +120,9 @@ inOutDatos.forEach(boton => {
                 const lector = new FileReader();
                 lector.onload = (e) => {
                     const datos = JSON.parse(e.target.result);
-                    bebidasPrecio = datos[0];
-                    ventas = datos[1];
-                    recaudacion = datos[2];
+                    datosMaquina[0] = datos[0];
+                    datosMaquina[1] = datos[1];
+                    datosMaquina[2] = datos[2];
                     guardarLocalStorage();
                     actualizarStockUI();
                 };
@@ -117,16 +132,19 @@ inOutDatos.forEach(boton => {
 
         } else if (boton.value === "Reset"){
 
-            bebidasPrecio = [
+            datosMaquina = [
+            {"bebidasPrecio": [
                 {bebida: "Coca-Cola", precio: 1.20, stock: 1},
                 {bebida: "Fanta", precio: 1, stock: 5},
                 {bebida: "Cerveza", precio: 1.55, stock: 10},
                 {bebida: "Red-Bull", precio: 2, stock: 2},
                 {bebida: "Agua Mineral", precio: 0.60, stock: 7},
                 {bebida: "Agua con Gas", precio: 0.95, stock: 5}
+            ]},
+            {"ventas": 0},
+            {"recaudacion": 0}
             ];
-            ventas = 0;
-            recaudacion = 0;
+
             guardarLocalStorage();
             actualizarStockUI();
             window.alert("Datos reseteados");
@@ -178,7 +196,7 @@ function comprarBebida() {
         return;
     }
 
-    const objetoBebida = bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === productoSeleccionado);
+    const objetoBebida = datosMaquina[0].bebidasPrecio.find(bebidaTemp => bebidaTemp.bebida === productoSeleccionado);
 
     if (objetoBebida.stock === 0){
         window.alert("No hay stock disponible");
@@ -200,8 +218,8 @@ function comprarBebida() {
         valorMoneda = 0;
         saldo.textContent = `SALDO: 0.00 €`;
         
-        ventas++;
-        recaudacion += objetoBebida.precio;
+        datosMaquina[1].ventas++;
+        datosMaquina[2].recaudacion += objetoBebida.precio;
         
         guardarLocalStorage();
 
@@ -211,10 +229,9 @@ function comprarBebida() {
 
 }
 
-function guardarLocalStorage(datosGuardados) {
+function guardarLocalStorage() {
 
-    datosGuardados = [bebidasPrecio, ventas, recaudacion];
-    localStorage.setItem("datosGuardados", JSON.stringify(datosGuardados));
+    localStorage.setItem("datosMaquina", JSON.stringify(datosMaquina));
 
 }
 
@@ -237,7 +254,7 @@ function calcularCambio(importeMonetario) {
 function actualizarStockUI() {
     bebidas.forEach(card => {
         const titulo = card.querySelector(".contenedor__bebidas-articulo-titulo").textContent;
-        const objetoBebida = bebidasPrecio.find(b => b.bebida === titulo);
+        const objetoBebida = datosMaquina[0].bebidasPrecio.find(b => b.bebida === titulo);
         if (objetoBebida) {
             const stockSpan = card.querySelector(".stock-cantidad");
             if (stockSpan) {
