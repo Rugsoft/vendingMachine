@@ -8,21 +8,37 @@ const comprar = document.querySelector(".contenedor__informacion-acciones-compra
 const cancelar = document.querySelector(".contenedor__informacion-acciones-cancelar");
 const sonidoMoneda = document.getElementById("sonidoMoneda");
 const sonidoBebida = document.getElementById("sonidoLata");
-const bebidasPrecio = [
-    {bebida: "Coca-Cola", precio: 1.20, stock: 1},
-    {bebida: "Fanta", precio: 1, stock: 5},
-    {bebida: "Cerveza", precio: 1.55, stock: 10},
-    {bebida: "Red-Bull", precio: 2, stock: 2},
-    {bebida: "Agua Mineral", precio: 0.60, stock: 7},
-    {bebida: "Agua con Gas", precio: 0.95, stock: 5}
-];
+
 const dinero = [20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05];
 
-
+let bebidasPrecio = [];
+let ventas;
+let recaudacion;
 let valorMoneda = 0;
 let productoSeleccionado = "";
-let ventas = 0;
-let recaudacion = 0;
+
+
+const datosGuardados = localStorage.getItem("datosGuardados");
+    if (datosGuardados) {
+        let datos = JSON.parse(datosGuardados);
+        bebidasPrecio = datos[0];
+        ventas = datos[1];
+        recaudacion = datos[2];
+        actualizarStockUI();
+    } else {
+
+        bebidasPrecio = [
+            {bebida: "Coca-Cola", precio: 1.20, stock: 1},
+            {bebida: "Fanta", precio: 1, stock: 5},
+            {bebida: "Cerveza", precio: 1.55, stock: 10},
+            {bebida: "Red-Bull", precio: 2, stock: 2},
+            {bebida: "Agua Mineral", precio: 0.60, stock: 7},
+            {bebida: "Agua con Gas", precio: 0.95, stock: 5}
+        ];
+        ventas = 0;
+        recaudacion = 0;
+        guardarLocalStorage();
+    }
 
 
 
@@ -129,9 +145,8 @@ function comprarBebida() {
         
         ventas++;
         recaudacion += objetoBebida.precio;
-        let datosGuardados = [bebidasPrecio, ventas, recaudacion];
-
-        guardarLocalStorage(datosGuardados);
+        
+        guardarLocalStorage();
 
     } else{
         window.alert("No tienes suficiente dinero");
@@ -141,6 +156,7 @@ function comprarBebida() {
 
 function guardarLocalStorage(datosGuardados) {
 
+    datosGuardados = [bebidasPrecio, ventas, recaudacion];
     localStorage.setItem("datosGuardados", JSON.stringify(datosGuardados));
 
 }
